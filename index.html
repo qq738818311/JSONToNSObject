@@ -35,14 +35,26 @@
             <a class="tip shown" title="" data-placement="bottom" data-original-title="显示行号"><i class="iconfont icon-richtextnumberedlist"></i></a>
             <a class="tip clear" title="" data-placement="bottom" data-original-title="清空"><i class="iconfont icon-shanchu"></i></a>
             <a class="tip save" title="" data-placement="bottom" data-original-title="保存"><i class="iconfont icon-xiazai"></i></a>
-            <a class="tip copy" title="" data-clipboard-target="#json-target" data-placement="bottom" data-original-title="复制"><i class="iconfont icon-fuzhi"></i></a>
+            <a class="tip copy" title="" data-clipboard-target="#Canvas" data-placement="bottom" data-original-title="复制"><i class="iconfont icon-fuzhi"></i></a>
             <a class="tip compress" title="" data-placement="bottom" data-original-title="折叠" style="color:#555;"><i class="iconfont icon-shouqi1"></i></a>
+            <a class="tip" title="" data-placement="bottom" data-original-title="层级" style="color:#555;"><i class="iconfont icon--cengji"></i>
+              <select onchange="CollapseLevel(parseInt(this.value))">
+                <option value="3">2级</option>
+                <option value="4">3级</option>
+                <option value="5">4级</option>
+                <option value="6">5级</option>
+                <option value="7">6级</option>
+                <option value="8">7级</option>
+                <option value="9">8级</option>
+              </select>
+            </a>
+            
         </div>
         <div id="right-box"  style="width:100%;height: 87vh;min-height:520px;border:solid 1px #f6f6f6;border-radius:0;resize: none;overflow-y:scroll; outline:none;position:relative;font-size:12px;padding-top:40px;">
             <div id="line-num" style="background-color:#fafafa;padding:0px 8px;float:left;border-right:dashed 1px #E5EBEE;display:none;z-index:-1;color:#999;position:absolute;text-align:center;over-flow:hidden;">
                 <div>0</div>
             </div>
-            <div class="ro" id="json-target" style="padding:10px 15px;white-space: pre-line;word-wrap:break-word;">
+            <div class="Canvas" id="Canvas" style="margin-left: 10px;white-space: pre-line;word-wrap:break-all;">
             </div>
         </div>
         <form id="form-save" method="POST"><input type="hidden" value="" id="txt-content" name="content"></form>
@@ -50,7 +62,10 @@
     <br style="clear:both;">
 </main>
 <link href="./css/jquery.numberedtextarea.css" rel="stylesheet">
-<script src="./js/hm.js"></script><script src="./js/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/s.css">
+<script src="./js/c.js"></script>
+<script src="./js/hm.js"></script>
+<script src="./js/jquery.min.js"></script>
 <script src="./js/jquery.message.js"></script><div style="clear:both;"></div><div id="jquery-beauty-msg"></div>
 <script src="./js/jquery.json.js"></script>
 <script src="./js/jquery.xml2json.js"></script>
@@ -91,10 +106,11 @@ $('#json-src').keyup(function(){
             try{
                 var json_obj = $.xml2json(content);
                 content = JSON.stringify(json_obj);
+                Process(content);
             }catch(e){
                 result = '解析错误：<span style="color: #f1592a;font-weight:bold;">' + e.message + '</span>';
                 current_json_str = result;
-                $('#json-target').html(result);
+                $('#Canvas').html(result);
                 return false;
             }
 
@@ -104,14 +120,15 @@ $('#json-src').keyup(function(){
             current_json_str = JSON.stringify(current_json);
             //current_json = JSON.parse(content);
             result = new JSONFormat(content,4).toString();
+            Process(content);
         }catch(e){
             result = '<span style="color: #f1592a;font-weight:bold;">' + e + '</span>';
             current_json_str = result;
+            $('#Canvas').html(result);
+            return false;
         }
-
-        $('#json-target').html(result);
     }else{
-        $('#json-target').html('');
+        $('#Canvas').html('');
     }
 
 });
@@ -123,7 +140,7 @@ $('.xml').click(function(){
     }else{
         start()
         // var result = $.json2xml(current_json);
-        // $('#json-target').html('<textarea style="width:100%;position:absolute;height: 80vh;min-height:480px;border:0;resize:none;">'+result+'</textarea>');
+        // $('#Canvas').html('<textarea style="width:100%;position:absolute;height: 80vh;min-height:480px;border:0;resize:none;">'+result+'</textarea>');
         xml_flag = true;
         $(this).attr('style','color:#15b374;');
     }
@@ -136,17 +153,17 @@ $('.shown').click(function(){
         $('.numberedtextarea-line-numbers').show();
         shown_flag = true;
         $(this).attr('style','color:#15b374;');
-        $('#json-target').attr('style','padding:10px 50px;');
+        $('#Canvas').attr('style','margin-left: 47px;');
     }else{
         $('#line-num').hide();
         $('.numberedtextarea-line-numbers').hide();
         shown_flag = false;
         $(this).attr('style','color:#999;');
-        $('#json-target').attr('style','padding:10px 15px;');
+        $('#Canvas').attr('style','margin-left: 10px');
     }
 });
 function renderLine(){
-    var line_num = $('#json-target').height()/20;
+    var line_num = $('#Canvas').height()/20;
     $('#line-num').html("");
     var line_num_html = "";
     for (var i = 1; i < line_num+1; i++) {
@@ -158,7 +175,7 @@ $('.zip').click(function(){
     if (zip_flag) {
         $('#json-src').keyup();
     }else{
-        $('#json-target').html(current_json_str);
+        $('#Canvas').html(current_json_str);
         zip_flag = true;
         $(this).attr('style','color:#15b374;');
     }
@@ -167,21 +184,23 @@ $('.zip').click(function(){
 $('.compress').click(function(){
     if(!compress_flag){
         $(this).attr('style','color:#15b374;');
-        //$(this).attr('title','取消折叠').tooltip('fixTitle').tooltip('show');
-        $($(".icon-jianhao").toArray().reverse()).click();
+        $(this).attr('title','展开').tooltip('fixTitle').tooltip('show');
+        // $($(".icon-jianhao").toArray().reverse()).click();
+        CollapseAllClicked();
         compress_flag = true;
     }else{
-        while($(".icon-jiahao").length>0){
-            $(".icon-jiahao").click();
-        }
-        compress_flag = false;
+        // while($(".icon-jiahao").length>0){
+        //     $(".icon-jiahao").click();
+        // }
         $(this).attr('style','color:#555;');
         $(this).attr('title','折叠').tooltip('fixTitle').tooltip('show');
+        ExpandAllClicked();
+        compress_flag = false;
     }
 });
 $('.clear').click(function(){
      $('#json-src').val('');
-     $('#json-target').html('');
+     $('#Canvas').html('');
 });
 (function($){
    $.fn.innerText = function(msg) {
@@ -209,8 +228,9 @@ $('.save').click(function(){
     // var content = JSON.stringify(current_json);
     // $('#txt-content').val(content);
     //var text = "hell world";
-    var html = $('#json-target').html().replace(/\n/g,'<br/>').replace(/\n/g,'<br>');
-    var text = $('#json-target').innerText().replace('　　', '    ');
+    ExpandAllClicked();
+    var html = $('#Canvas').html().replace(/\n/g,'<br/>').replace(/\n/g,'<br>');
+    var text = $('#Canvas').innerText().replace('　　', '    ');
     var blob = new Blob([text], {type: "application/json;charset=utf-8"});
     var timestamp=new Date().getTime();
     saveAs(blob, "format."+timestamp+".json");
@@ -221,6 +241,7 @@ $('.copy').click(function(){
     //       .attr('data-original-title', "复制成功！")
     //       .tooltip('fixTitle')
     //       .tooltip('toggle');
+    ExpandAllClicked();
 });
 var clipboard = new Clipboard('.copy');
 $('#json-src').keyup();
@@ -255,12 +276,12 @@ try{
   var result = JSON.parse(document.getElementById("json-src").value);
 }catch(error){
   console.log("解析JSON文件失败:"+error);
-  document.getElementById("json-target").innerText = "解析JSON文件失败:"+error;
+  document.getElementById("Canvas").innerText = "解析JSON文件失败:"+error;
   return;
 }
 if (!result) {
   console.log("解析JSON文件无效");
-  document.getElementById("json-target").innerText = "解析JSON文件无效";
+  document.getElementById("Canvas").innerText = "解析JSON文件无效";
   return;
 }
 document.classArray = new Array();
@@ -285,7 +306,7 @@ for (var i = document.classArray.length-1; i >=0 ; i--) {
   stringAll+="@implementation "+cla.name+"\r\n@end\r\n";
   console.log("@implementation "+cla.name+"\r\n@end\r\n");
 }
-document.getElementById("json-target").innerText = stringAll;
+document.getElementById("Canvas").innerText = stringAll;
 
 }
 

@@ -417,7 +417,7 @@ var jsonlint = function() {
                             showPosition: function() {
                                 var a = this.pastInput(),
                                     b = (new Array(a.length + 1 - 5)).join("&nbsp;");
-                                return "<code>"+ a + this.upcomingInput() + "</code><br/>" + b + '<i class="fa fa-arrow-up" style="color:green;"></i>'
+                                return "<code>"+ a + this.upcomingInput() + "</code><br/>" + b + '<i class="iconfont icon-down" style="color:green;"></i>'
                             },
                             next: function() {
                                 if (this.done) return this.EOF;

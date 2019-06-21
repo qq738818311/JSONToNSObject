@@ -1,0 +1,155 @@
+@charset "utf-8";
+/* CSS Document */
+div.ControlsRow, div.HeadersRow {
+	font-family: Georgia;
+}
+div.Canvas
+
+{
+
+  font-family: menlo,monospace, Tahoma,"微软雅黑","幼圆",Lucida Console, Georgia;
+
+  font-size: 12px;
+
+	/*background-color:#ECECEC;*/
+
+	color:#000000;
+
+	/*border:solid 1px #CECECE;*/
+
+}
+
+.ObjectBrace
+
+{
+
+	color:#4A5560;
+
+	/*font-weight:bold;*/
+
+}
+
+.ArrayBrace
+
+{
+
+	color:#4A5560;
+
+	/*font-weight:bold;*/
+
+}
+
+.PropertyName
+
+{
+
+	color:#92278f;
+
+	font-weight:bold;
+
+}
+
+.String
+
+{
+
+	color:#3ab54a;
+  font-weight:bold;
+  display: contents;
+
+}
+
+.Number
+
+{
+
+	color:#25aae2;
+
+}
+
+.Boolean
+
+{
+
+  color:#0000FF;
+
+}
+
+.Function
+
+{
+
+  color:#AA6633;
+
+  text-decoration:italic;
+
+}
+
+.Null
+
+{
+
+  color:#0000FF;
+
+}
+
+.Comma
+
+{
+
+  color:#000000;
+
+  font-weight:bold;
+
+}
+
+PRE.CodeContainer{
+
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    background-color: #fff;
+    border: 0px solid #ccc;
+    white-space:pre-wrap;
+    padding: 0px 10px;
+
+}
+
+PRE.CodeContainer img{
+
+  cursor:pointer;
+
+  border:none;
+
+  margin-bottom:1.5px;
+  border-radius:1.5px;
+
+}
+#CollapsibleViewDetail a{
+  padding-left:10px;
+}
+#ControlsRow{
+  white-space:nowrap;
+  font: 11px Georgia;
+
+}
+#TabSizeHolder{
+  padding-left:10px;
+  padding-right:10px;
+}
+#HeaderTitle{
+  text-align:right;
+  font-size:11px;
+}
+#HeaderSubTitle{
+  margin-bottom:2px;
+  margin-top:0px
+}
+#RawJson{
+  width:99%;
+  height:60px;
+
+}
+A.OtherToolsLink { color:#555;text-decoration:none; }
+A.OtherToolsLink:hover { text-decoration:underline; }
+
