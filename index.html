@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <!-- saved from url=(0021)https://www.json.cn/# -->
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
     <title>JSON转NSObject</title>
 
     <link href="./css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +44,7 @@
             <a class="tip copy" title="" data-clipboard-target="#Canvas" data-placement="bottom" data-original-title="复制"><i class="iconfont icon-fuzhi"></i></a>
             <a class="tip compress" title="" data-placement="bottom" data-original-title="折叠" style="color:#555;"><i class="iconfont icon-shouqi1"></i></a>
             <a class="tip" title="" data-placement="bottom" data-original-title="层级" style="color:#555;"><i class="iconfont icon--cengji"></i>
-              <select onchange="CollapseLevel(parseInt(this.value))">
+              <select onchange="CollapseLevel(parseInt(this.value))" onclick="CollapseLevel(parseInt(this.value))">
                 <option value="3">2级</option>
                 <option value="4">3级</option>
                 <option value="5">4级</option>

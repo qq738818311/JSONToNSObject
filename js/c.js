@@ -255,7 +255,6 @@ function TraverseChildren(element, func, depth){
 function ExpImgClicked(img){
 
   var container = img.parentNode.nextSibling;
-// console.log(img.parentNode);
 
   if(!container) return;
 
@@ -289,7 +288,6 @@ function ExpImgClicked(img){
 function CollapseLevel(level){
 
   EnsureIsPopulated();
-console.log($id("Canvas"));
 
   TraverseChildren($id("Canvas"), function(element, depth){
 
